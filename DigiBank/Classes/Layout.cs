@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DigiBank.Classes
 {
-    public  class Layout
+    public class Layout
     {
         private static List<Pessoa> pessoas = new List<Pessoa>();
         private static int opcao = 0;
@@ -24,7 +27,7 @@ namespace DigiBank.Classes
             Console.WriteLine("               1 - Criar Conta                   ");
             Console.WriteLine("            ########################             ");
             Console.WriteLine("            2 - Entrar com CPF e senha           ");
-            
+
             opcao = int.Parse(Console.ReadLine());
 
             switch (opcao)
@@ -32,7 +35,7 @@ namespace DigiBank.Classes
                 case 1:
                     TelaCriarConta();
                     break;
-                case 2: 
+                case 2:
                     TelaLogin();
                     break;
                 default:
@@ -40,8 +43,8 @@ namespace DigiBank.Classes
                     break;
             }
 
-        }   
-        
+        }
+
         private static void TelaCriarConta()
         {
             Console.Clear();
@@ -64,10 +67,10 @@ namespace DigiBank.Classes
 
             //criar conta
 
-            ContaCorrente contaCorrente = new ContaCorrente(); 
+            ContaCorrente contaCorrente = new ContaCorrente();
             Pessoa pessoa = new Pessoa();
 
-            pessoa.SetNome(nome);   
+            pessoa.SetNome(nome);
             pessoa.SetCPF(cpf);
             pessoa.SetSenha(senha);
             pessoa.Conta = contaCorrente;
@@ -76,9 +79,12 @@ namespace DigiBank.Classes
 
             Console.Clear();
 
-            
+
             Console.WriteLine("         Conta cadastrada com sucesso            ");
             Console.WriteLine("            ########################             ");
+
+            Thread.Sleep(1500);
+            TelaContaLogada(pessoa);
         }
 
         private static void TelaLogin()
@@ -94,10 +100,81 @@ namespace DigiBank.Classes
             Console.WriteLine("            ########################             ");
 
 
-            // Logar no sistema
+            Pessoa pessoa = pessoas.FirstOrDefault(x => x.CPF == cpf && x.Senha == senha);
+
+            if (pessoa != null)
+            {
+                TelaBoasVindas(pessoa);
+                TelaContaLogada(pessoa);
+            }
+            else
+            {
+                Console.Clear(); 
+
+                Console.WriteLine("             Pessoa não cadastrada               ");
+                Console.WriteLine("            ########################             ");
+                Console.WriteLine("                                                 ");
+                Console.WriteLine("                                                 ");
+            }
         }
-    }
+
+        private static void TelaBoasVindas(Pessoa pessoa)
+        {
+            string msgTelaBoasVindas =
+            $"{pessoa.Nome} | Banco: {pessoa.Conta.GetCodigoDoBanco()} " +
+            $"| Agência: {pessoa.Conta.GetNumeroAgencia()} | Conta: {pessoa.Conta.GetNumeroDaConta()}";
+
+            Console.WriteLine("                                                  ");
+            Console.WriteLine($"         Seja Bem-vindo, {msgTelaBoasVindas}     ");
+            Console.WriteLine("                                                  ");
+        }
+
+        private static void TelaContaLogada(Pessoa pessoa)
+        {
+            Console.Clear();
+
+            TelaBoasVindas(pessoa);
+
+            Console.WriteLine("             Digite a opção desejada:            ");
+            Console.WriteLine("            ########################             ");
+            Console.WriteLine("                1 - Deposito                     ");
+            Console.WriteLine("            ########################             ");
+            Console.WriteLine("                2 - Saque                        ");
+            Console.WriteLine("            ########################             ");
+            Console.WriteLine("                3 - Saldo                        ");
+            Console.WriteLine("            ########################             ");
+            Console.WriteLine("                4 - Extrato                      ");
+            Console.WriteLine("            ########################             ");
+            Console.WriteLine("                5 - Sair                         ");
+
+            opcao = int.Parse(Console.ReadLine());
+
+            switch(opcao)
+            {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5: TelaPrincipal();
+                    break;
+                default:
+                    Console.WriteLine("                Opção inválida!                  ");
+                    Console.WriteLine("            ########################             ");
+                    break;
+            }
+        }
+}
+
+    
+
+    
+        
 
 }
-        
+
+    
        
