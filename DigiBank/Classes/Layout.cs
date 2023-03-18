@@ -167,7 +167,52 @@ namespace DigiBank.Classes
                     break;
             }
         }
-}
+
+        private static void TelaDeposito(Pessoa pessoa)
+        {
+            Console.Clear();
+
+            TelaBoasVindas(pessoa);
+
+            Console.WriteLine("               Digite o valor do deposito:                  ");
+            double valor = double.Parse(Console.ReadLine());
+            Console.WriteLine("               ===========================                  ");
+
+            pessoa.Conta.Deposita(valor);
+
+            Console.Clear() ;
+
+            TelaBoasVindas(pessoa);
+
+            Console.WriteLine("                                                            ");
+            Console.WriteLine("                                                            ");
+            Console.WriteLine("              Deposito realizado com sucesso!               ");
+            Console.WriteLine("               ===========================                  ");
+            Console.WriteLine("                                                            ");
+            Console.WriteLine("                                                            ");
+
+        }
+
+        private static void OpcaoVoltarLogado(Pessoa pessoa) 
+        {
+            Console.WriteLine("              Escolha uma opção abaixo                      ");
+            Console.WriteLine("              ===========================                   ");
+            Console.WriteLine("              1 - Voltar para minha conta                   ");
+            Console.WriteLine("              ===========================                   ");
+            Console.WriteLine("              2 - Sair                                      ");
+            Console.WriteLine("              ===========================                   ");
+
+            opcao = int.Parse(Console.ReadLine());
+
+            if (opcao == 1)
+                TelaContaLogada(pessoa);
+            else
+                TelaPrincipal();
+
+        }
+    }
+     
+            
 
     
 
